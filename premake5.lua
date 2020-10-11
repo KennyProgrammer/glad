@@ -9,8 +9,10 @@ project "OpenGl"
 	files
 	{
 		"include/glad/glad.h",
+		"include/glad/glad_wgl.h",
 		"include/KHR/khrplatform.h",
-		"src/glad.c"
+		"src/glad.c",
+		"src/glad/glad_wgl.c"
 	}
 
 	includedirs
