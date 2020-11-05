@@ -12,7 +12,7 @@ project "OpenGl"
 		"include/glad/glad_wgl.h",
 		"include/KHR/khrplatform.h",
 		"src/glad.c",
-		"src/glad/glad_wgl.c"
+		"src/glad_wgl.c"
 	}
 
 	includedirs
