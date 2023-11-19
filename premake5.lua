@@ -1,10 +1,10 @@
 --
 -- Main Premake5 file for building OpenGL wtih GLAD project.
--- Copyright (c) 2020-2022 by Danil (Kenny) Dukhovenko, All rights reserved.
+-- Copyright (c) 2020-2023 by Danil (Kenny) Dukhovenko, All rights reserved.
 --
 
 -- OpenGL/GLAD C++ Project
-project "OpenGl"
+project "OpenGL"
 	kind "StaticLib"
 	language "C"
 	staticruntime "on"
@@ -21,6 +21,10 @@ project "OpenGl"
 
 	includedirs {
 		"include"
+	}
+	
+	links {
+		"%{Library.OpenGL32}"
 	}
 
 	filter "system:windows"
