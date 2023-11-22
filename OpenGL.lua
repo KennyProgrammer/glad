@@ -2,14 +2,17 @@
 -- Main Premake5 file for building OpenGL wtih GLAD project.
 -- Copyright (c) 2020-2023 by Danil (Kenny) Dukhovenko, All rights reserved.
 --
+-- Requirement:
+--  - ForceEngine.lua
+--
 
 -- OpenGL/GLAD C++ Project
 project "OpenGL"
-	kind "StaticLib"
-	language "C"
+	kind          "StaticLib"
+	language      "C"
 	staticruntime "on"
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	targetdir     ("%{ForceDir.BinLib}/" .. BuildDir .. "/%{prj.name}/lib")
+	objdir        ("%{ForceDir.BinLib}/" .. BuildDir .. "/%{prj.name}/obj")
 
 	files {
 		"include/glad/glad.h",
@@ -24,7 +27,7 @@ project "OpenGL"
 	}
 	
 	links {
-		"%{Library.OpenGL32}"
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
