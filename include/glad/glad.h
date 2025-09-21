@@ -19,6 +19,7 @@
         https://glad.dav1d.de/#profile=compatibility&language=c&specification=gl&loader=on&api=gl%3D4.6
 */
 
+#pragma once
 
 #ifndef __glad_h_
 #define __glad_h_
@@ -52,8 +53,6 @@ struct gladGLversionStruct {
     int minor;
 };
 
-typedef void* (* GLADloadproc)(const char *name);
-
 #ifndef GLAPI
 # if defined(GLAD_GLAPI_EXPORT)
 #  if defined(_WIN32) || defined(__CYGWIN__)
@@ -82,9 +81,20 @@ typedef void* (* GLADloadproc)(const char *name);
 
 GLAPI struct gladGLversionStruct GLVersion;
 
-GLAPI int gladLoadGL(void);
-
-GLAPI int gladLoadGLLoader(GLADloadproc);
+// glLibrary - is a ForceEngine struct that realized by specifc OS GL Context.
+// Win32: WGLLibrary
+// Cocoa: CGLLibrary (future)
+// X11:   XGLLibrary (future)
+#define __glad_h_ForceEngine
+#ifdef __glad_h_ForceEngine
+	typedef void* (*GLADloadproc)(const char* name, void* glLibrary);
+	GLAPI int gladLoadGL(void* glLibrary);
+	GLAPI int gladLoadGLLoader(GLADloadproc, void* glLibrary);
+#else
+	typedef void* (*GLADloadproc)(const char* name);
+	GLAPI int gladLoadGL(void);
+	GLAPI int gladLoadGLLoader(GLADloadproc);
+#endif
 
 #include <KHR/khrplatform.h>
 typedef unsigned int GLenum;

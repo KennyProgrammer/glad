@@ -80,7 +80,7 @@
 #include <string.h>
 #include <glad/glad_wgl.h>
 
-static void* get_proc(const char *namez);
+static void* get_proc(void* wglLibrary, const char *namez);
 
 #if defined(_WIN32) || defined(__CYGWIN__)
 #ifndef _WINDOWS_
@@ -181,7 +181,7 @@ void close_gl(void) {
 #endif
 
 static
-void* get_proc(const char *namez) {
+void* get_proc(void* wglLibrary, const char *namez) {
     void* result = NULL;
     if(libGL == NULL) return NULL;
 
@@ -201,11 +201,11 @@ void* get_proc(const char *namez) {
     return result;
 }
 
-int gladLoadWGL(HDC hdc) {
+int gladLoadWGL(HDC hdc, void* wglLibrary) {
     int status = 0;
 
     if(open_gl()) {
-        status = gladLoadWGLLoader((GLADloadproc)get_proc, hdc);
+        status = gladLoadWGLLoader((GLADloadproc)get_proc, hdc, wglLibrary);
         close_gl();
     }
 
@@ -431,217 +431,217 @@ PFNWGLSWAPBUFFERSMSCOMLPROC glad_wglSwapBuffersMscOML = NULL;
 PFNWGLSWAPLAYERBUFFERSMSCOMLPROC glad_wglSwapLayerBuffersMscOML = NULL;
 PFNWGLWAITFORMSCOMLPROC glad_wglWaitForMscOML = NULL;
 PFNWGLWAITFORSBCOMLPROC glad_wglWaitForSbcOML = NULL;
-static void load_WGL_3DL_stereo_control(GLADloadproc load) {
+static void load_WGL_3DL_stereo_control(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_3DL_stereo_control) return;
-	glad_wglSetStereoEmitterState3DL = (PFNWGLSETSTEREOEMITTERSTATE3DLPROC)load("wglSetStereoEmitterState3DL");
+	glad_wglSetStereoEmitterState3DL = (PFNWGLSETSTEREOEMITTERSTATE3DLPROC)load("wglSetStereoEmitterState3DL", wglLibrary);
 }
-static void load_WGL_AMD_gpu_association(GLADloadproc load) {
+static void load_WGL_AMD_gpu_association(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_AMD_gpu_association) return;
-	glad_wglGetGPUIDsAMD = (PFNWGLGETGPUIDSAMDPROC)load("wglGetGPUIDsAMD");
-	glad_wglGetGPUInfoAMD = (PFNWGLGETGPUINFOAMDPROC)load("wglGetGPUInfoAMD");
-	glad_wglGetContextGPUIDAMD = (PFNWGLGETCONTEXTGPUIDAMDPROC)load("wglGetContextGPUIDAMD");
-	glad_wglCreateAssociatedContextAMD = (PFNWGLCREATEASSOCIATEDCONTEXTAMDPROC)load("wglCreateAssociatedContextAMD");
-	glad_wglCreateAssociatedContextAttribsAMD = (PFNWGLCREATEASSOCIATEDCONTEXTATTRIBSAMDPROC)load("wglCreateAssociatedContextAttribsAMD");
-	glad_wglDeleteAssociatedContextAMD = (PFNWGLDELETEASSOCIATEDCONTEXTAMDPROC)load("wglDeleteAssociatedContextAMD");
-	glad_wglMakeAssociatedContextCurrentAMD = (PFNWGLMAKEASSOCIATEDCONTEXTCURRENTAMDPROC)load("wglMakeAssociatedContextCurrentAMD");
-	glad_wglGetCurrentAssociatedContextAMD = (PFNWGLGETCURRENTASSOCIATEDCONTEXTAMDPROC)load("wglGetCurrentAssociatedContextAMD");
-	glad_wglBlitContextFramebufferAMD = (PFNWGLBLITCONTEXTFRAMEBUFFERAMDPROC)load("wglBlitContextFramebufferAMD");
+	glad_wglGetGPUIDsAMD = (PFNWGLGETGPUIDSAMDPROC)load("wglGetGPUIDsAMD", wglLibrary);
+	glad_wglGetGPUInfoAMD = (PFNWGLGETGPUINFOAMDPROC)load("wglGetGPUInfoAMD", wglLibrary);
+	glad_wglGetContextGPUIDAMD = (PFNWGLGETCONTEXTGPUIDAMDPROC)load("wglGetContextGPUIDAMD", wglLibrary);
+	glad_wglCreateAssociatedContextAMD = (PFNWGLCREATEASSOCIATEDCONTEXTAMDPROC)load("wglCreateAssociatedContextAMD", wglLibrary);
+	glad_wglCreateAssociatedContextAttribsAMD = (PFNWGLCREATEASSOCIATEDCONTEXTATTRIBSAMDPROC)load("wglCreateAssociatedContextAttribsAMD", wglLibrary);
+	glad_wglDeleteAssociatedContextAMD = (PFNWGLDELETEASSOCIATEDCONTEXTAMDPROC)load("wglDeleteAssociatedContextAMD", wglLibrary);
+	glad_wglMakeAssociatedContextCurrentAMD = (PFNWGLMAKEASSOCIATEDCONTEXTCURRENTAMDPROC)load("wglMakeAssociatedContextCurrentAMD", wglLibrary);
+	glad_wglGetCurrentAssociatedContextAMD = (PFNWGLGETCURRENTASSOCIATEDCONTEXTAMDPROC)load("wglGetCurrentAssociatedContextAMD", wglLibrary);
+	glad_wglBlitContextFramebufferAMD = (PFNWGLBLITCONTEXTFRAMEBUFFERAMDPROC)load("wglBlitContextFramebufferAMD", wglLibrary);
 }
-static void load_WGL_ARB_buffer_region(GLADloadproc load) {
+static void load_WGL_ARB_buffer_region(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_ARB_buffer_region) return;
-	glad_wglCreateBufferRegionARB = (PFNWGLCREATEBUFFERREGIONARBPROC)load("wglCreateBufferRegionARB");
-	glad_wglDeleteBufferRegionARB = (PFNWGLDELETEBUFFERREGIONARBPROC)load("wglDeleteBufferRegionARB");
-	glad_wglSaveBufferRegionARB = (PFNWGLSAVEBUFFERREGIONARBPROC)load("wglSaveBufferRegionARB");
-	glad_wglRestoreBufferRegionARB = (PFNWGLRESTOREBUFFERREGIONARBPROC)load("wglRestoreBufferRegionARB");
+	glad_wglCreateBufferRegionARB = (PFNWGLCREATEBUFFERREGIONARBPROC)load("wglCreateBufferRegionARB", wglLibrary);
+	glad_wglDeleteBufferRegionARB = (PFNWGLDELETEBUFFERREGIONARBPROC)load("wglDeleteBufferRegionARB", wglLibrary);
+	glad_wglSaveBufferRegionARB = (PFNWGLSAVEBUFFERREGIONARBPROC)load("wglSaveBufferRegionARB", wglLibrary);
+	glad_wglRestoreBufferRegionARB = (PFNWGLRESTOREBUFFERREGIONARBPROC)load("wglRestoreBufferRegionARB", wglLibrary);
 }
-static void load_WGL_ARB_create_context(GLADloadproc load) {
+static void load_WGL_ARB_create_context(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_ARB_create_context) return;
-	glad_wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)load("wglCreateContextAttribsARB");
+	glad_wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)load("wglCreateContextAttribsARB", wglLibrary);
 }
-static void load_WGL_ARB_extensions_string(GLADloadproc load) {
+static void load_WGL_ARB_extensions_string(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_ARB_extensions_string) return;
-	glad_wglGetExtensionsStringARB = (PFNWGLGETEXTENSIONSSTRINGARBPROC)load("wglGetExtensionsStringARB");
+	glad_wglGetExtensionsStringARB = (PFNWGLGETEXTENSIONSSTRINGARBPROC)load("wglGetExtensionsStringARB", wglLibrary);
 }
-static void load_WGL_ARB_make_current_read(GLADloadproc load) {
+static void load_WGL_ARB_make_current_read(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_ARB_make_current_read) return;
-	glad_wglMakeContextCurrentARB = (PFNWGLMAKECONTEXTCURRENTARBPROC)load("wglMakeContextCurrentARB");
-	glad_wglGetCurrentReadDCARB = (PFNWGLGETCURRENTREADDCARBPROC)load("wglGetCurrentReadDCARB");
+	glad_wglMakeContextCurrentARB = (PFNWGLMAKECONTEXTCURRENTARBPROC)load("wglMakeContextCurrentARB", wglLibrary);
+	glad_wglGetCurrentReadDCARB = (PFNWGLGETCURRENTREADDCARBPROC)load("wglGetCurrentReadDCARB", wglLibrary);
 }
-static void load_WGL_ARB_pbuffer(GLADloadproc load) {
+static void load_WGL_ARB_pbuffer(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_ARB_pbuffer) return;
-	glad_wglCreatePbufferARB = (PFNWGLCREATEPBUFFERARBPROC)load("wglCreatePbufferARB");
-	glad_wglGetPbufferDCARB = (PFNWGLGETPBUFFERDCARBPROC)load("wglGetPbufferDCARB");
-	glad_wglReleasePbufferDCARB = (PFNWGLRELEASEPBUFFERDCARBPROC)load("wglReleasePbufferDCARB");
-	glad_wglDestroyPbufferARB = (PFNWGLDESTROYPBUFFERARBPROC)load("wglDestroyPbufferARB");
-	glad_wglQueryPbufferARB = (PFNWGLQUERYPBUFFERARBPROC)load("wglQueryPbufferARB");
+	glad_wglCreatePbufferARB = (PFNWGLCREATEPBUFFERARBPROC)load("wglCreatePbufferARB", wglLibrary);
+	glad_wglGetPbufferDCARB = (PFNWGLGETPBUFFERDCARBPROC)load("wglGetPbufferDCARB", wglLibrary);
+	glad_wglReleasePbufferDCARB = (PFNWGLRELEASEPBUFFERDCARBPROC)load("wglReleasePbufferDCARB", wglLibrary);
+	glad_wglDestroyPbufferARB = (PFNWGLDESTROYPBUFFERARBPROC)load("wglDestroyPbufferARB", wglLibrary);
+	glad_wglQueryPbufferARB = (PFNWGLQUERYPBUFFERARBPROC)load("wglQueryPbufferARB", wglLibrary);
 }
-static void load_WGL_ARB_pixel_format(GLADloadproc load) {
+static void load_WGL_ARB_pixel_format(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_ARB_pixel_format) return;
-	glad_wglGetPixelFormatAttribivARB = (PFNWGLGETPIXELFORMATATTRIBIVARBPROC)load("wglGetPixelFormatAttribivARB");
-	glad_wglGetPixelFormatAttribfvARB = (PFNWGLGETPIXELFORMATATTRIBFVARBPROC)load("wglGetPixelFormatAttribfvARB");
-	glad_wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC)load("wglChoosePixelFormatARB");
+	glad_wglGetPixelFormatAttribivARB = (PFNWGLGETPIXELFORMATATTRIBIVARBPROC)load("wglGetPixelFormatAttribivARB", wglLibrary);
+	glad_wglGetPixelFormatAttribfvARB = (PFNWGLGETPIXELFORMATATTRIBFVARBPROC)load("wglGetPixelFormatAttribfvARB", wglLibrary);
+	glad_wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC)load("wglChoosePixelFormatARB", wglLibrary);
 }
-static void load_WGL_ARB_render_texture(GLADloadproc load) {
+static void load_WGL_ARB_render_texture(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_ARB_render_texture) return;
-	glad_wglBindTexImageARB = (PFNWGLBINDTEXIMAGEARBPROC)load("wglBindTexImageARB");
-	glad_wglReleaseTexImageARB = (PFNWGLRELEASETEXIMAGEARBPROC)load("wglReleaseTexImageARB");
-	glad_wglSetPbufferAttribARB = (PFNWGLSETPBUFFERATTRIBARBPROC)load("wglSetPbufferAttribARB");
+	glad_wglBindTexImageARB = (PFNWGLBINDTEXIMAGEARBPROC)load("wglBindTexImageARB", wglLibrary);
+	glad_wglReleaseTexImageARB = (PFNWGLRELEASETEXIMAGEARBPROC)load("wglReleaseTexImageARB", wglLibrary);
+	glad_wglSetPbufferAttribARB = (PFNWGLSETPBUFFERATTRIBARBPROC)load("wglSetPbufferAttribARB", wglLibrary);
 }
-static void load_WGL_EXT_display_color_table(GLADloadproc load) {
+static void load_WGL_EXT_display_color_table(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_EXT_display_color_table) return;
-	glad_wglCreateDisplayColorTableEXT = (PFNWGLCREATEDISPLAYCOLORTABLEEXTPROC)load("wglCreateDisplayColorTableEXT");
-	glad_wglLoadDisplayColorTableEXT = (PFNWGLLOADDISPLAYCOLORTABLEEXTPROC)load("wglLoadDisplayColorTableEXT");
-	glad_wglBindDisplayColorTableEXT = (PFNWGLBINDDISPLAYCOLORTABLEEXTPROC)load("wglBindDisplayColorTableEXT");
-	glad_wglDestroyDisplayColorTableEXT = (PFNWGLDESTROYDISPLAYCOLORTABLEEXTPROC)load("wglDestroyDisplayColorTableEXT");
+	glad_wglCreateDisplayColorTableEXT = (PFNWGLCREATEDISPLAYCOLORTABLEEXTPROC)load("wglCreateDisplayColorTableEXT", wglLibrary);
+	glad_wglLoadDisplayColorTableEXT = (PFNWGLLOADDISPLAYCOLORTABLEEXTPROC)load("wglLoadDisplayColorTableEXT", wglLibrary);
+	glad_wglBindDisplayColorTableEXT = (PFNWGLBINDDISPLAYCOLORTABLEEXTPROC)load("wglBindDisplayColorTableEXT", wglLibrary);
+	glad_wglDestroyDisplayColorTableEXT = (PFNWGLDESTROYDISPLAYCOLORTABLEEXTPROC)load("wglDestroyDisplayColorTableEXT", wglLibrary);
 }
-static void load_WGL_EXT_extensions_string(GLADloadproc load) {
+static void load_WGL_EXT_extensions_string(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_EXT_extensions_string) return;
-	glad_wglGetExtensionsStringEXT = (PFNWGLGETEXTENSIONSSTRINGEXTPROC)load("wglGetExtensionsStringEXT");
+	glad_wglGetExtensionsStringEXT = (PFNWGLGETEXTENSIONSSTRINGEXTPROC)load("wglGetExtensionsStringEXT", wglLibrary);
 }
-static void load_WGL_EXT_make_current_read(GLADloadproc load) {
+static void load_WGL_EXT_make_current_read(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_EXT_make_current_read) return;
-	glad_wglMakeContextCurrentEXT = (PFNWGLMAKECONTEXTCURRENTEXTPROC)load("wglMakeContextCurrentEXT");
-	glad_wglGetCurrentReadDCEXT = (PFNWGLGETCURRENTREADDCEXTPROC)load("wglGetCurrentReadDCEXT");
+	glad_wglMakeContextCurrentEXT = (PFNWGLMAKECONTEXTCURRENTEXTPROC)load("wglMakeContextCurrentEXT", wglLibrary);
+	glad_wglGetCurrentReadDCEXT = (PFNWGLGETCURRENTREADDCEXTPROC)load("wglGetCurrentReadDCEXT", wglLibrary);
 }
-static void load_WGL_EXT_pbuffer(GLADloadproc load) {
+static void load_WGL_EXT_pbuffer(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_EXT_pbuffer) return;
-	glad_wglCreatePbufferEXT = (PFNWGLCREATEPBUFFEREXTPROC)load("wglCreatePbufferEXT");
-	glad_wglGetPbufferDCEXT = (PFNWGLGETPBUFFERDCEXTPROC)load("wglGetPbufferDCEXT");
-	glad_wglReleasePbufferDCEXT = (PFNWGLRELEASEPBUFFERDCEXTPROC)load("wglReleasePbufferDCEXT");
-	glad_wglDestroyPbufferEXT = (PFNWGLDESTROYPBUFFEREXTPROC)load("wglDestroyPbufferEXT");
-	glad_wglQueryPbufferEXT = (PFNWGLQUERYPBUFFEREXTPROC)load("wglQueryPbufferEXT");
+	glad_wglCreatePbufferEXT = (PFNWGLCREATEPBUFFEREXTPROC)load("wglCreatePbufferEXT", wglLibrary);
+	glad_wglGetPbufferDCEXT = (PFNWGLGETPBUFFERDCEXTPROC)load("wglGetPbufferDCEXT", wglLibrary);
+	glad_wglReleasePbufferDCEXT = (PFNWGLRELEASEPBUFFERDCEXTPROC)load("wglReleasePbufferDCEXT", wglLibrary);
+	glad_wglDestroyPbufferEXT = (PFNWGLDESTROYPBUFFEREXTPROC)load("wglDestroyPbufferEXT", wglLibrary);
+	glad_wglQueryPbufferEXT = (PFNWGLQUERYPBUFFEREXTPROC)load("wglQueryPbufferEXT", wglLibrary);
 }
-static void load_WGL_EXT_pixel_format(GLADloadproc load) {
+static void load_WGL_EXT_pixel_format(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_EXT_pixel_format) return;
-	glad_wglGetPixelFormatAttribivEXT = (PFNWGLGETPIXELFORMATATTRIBIVEXTPROC)load("wglGetPixelFormatAttribivEXT");
-	glad_wglGetPixelFormatAttribfvEXT = (PFNWGLGETPIXELFORMATATTRIBFVEXTPROC)load("wglGetPixelFormatAttribfvEXT");
-	glad_wglChoosePixelFormatEXT = (PFNWGLCHOOSEPIXELFORMATEXTPROC)load("wglChoosePixelFormatEXT");
+	glad_wglGetPixelFormatAttribivEXT = (PFNWGLGETPIXELFORMATATTRIBIVEXTPROC)load("wglGetPixelFormatAttribivEXT", wglLibrary);
+	glad_wglGetPixelFormatAttribfvEXT = (PFNWGLGETPIXELFORMATATTRIBFVEXTPROC)load("wglGetPixelFormatAttribfvEXT", wglLibrary);
+	glad_wglChoosePixelFormatEXT = (PFNWGLCHOOSEPIXELFORMATEXTPROC)load("wglChoosePixelFormatEXT", wglLibrary);
 }
-static void load_WGL_EXT_swap_control(GLADloadproc load) {
+static void load_WGL_EXT_swap_control(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_EXT_swap_control) return;
-	glad_wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)load("wglSwapIntervalEXT");
-	glad_wglGetSwapIntervalEXT = (PFNWGLGETSWAPINTERVALEXTPROC)load("wglGetSwapIntervalEXT");
+	glad_wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)load("wglSwapIntervalEXT", wglLibrary);
+	glad_wglGetSwapIntervalEXT = (PFNWGLGETSWAPINTERVALEXTPROC)load("wglGetSwapIntervalEXT", wglLibrary);
 }
-static void load_WGL_I3D_digital_video_control(GLADloadproc load) {
+static void load_WGL_I3D_digital_video_control(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_I3D_digital_video_control) return;
-	glad_wglGetDigitalVideoParametersI3D = (PFNWGLGETDIGITALVIDEOPARAMETERSI3DPROC)load("wglGetDigitalVideoParametersI3D");
-	glad_wglSetDigitalVideoParametersI3D = (PFNWGLSETDIGITALVIDEOPARAMETERSI3DPROC)load("wglSetDigitalVideoParametersI3D");
+	glad_wglGetDigitalVideoParametersI3D = (PFNWGLGETDIGITALVIDEOPARAMETERSI3DPROC)load("wglGetDigitalVideoParametersI3D", wglLibrary);
+	glad_wglSetDigitalVideoParametersI3D = (PFNWGLSETDIGITALVIDEOPARAMETERSI3DPROC)load("wglSetDigitalVideoParametersI3D", wglLibrary);
 }
-static void load_WGL_I3D_gamma(GLADloadproc load) {
+static void load_WGL_I3D_gamma(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_I3D_gamma) return;
-	glad_wglGetGammaTableParametersI3D = (PFNWGLGETGAMMATABLEPARAMETERSI3DPROC)load("wglGetGammaTableParametersI3D");
-	glad_wglSetGammaTableParametersI3D = (PFNWGLSETGAMMATABLEPARAMETERSI3DPROC)load("wglSetGammaTableParametersI3D");
-	glad_wglGetGammaTableI3D = (PFNWGLGETGAMMATABLEI3DPROC)load("wglGetGammaTableI3D");
-	glad_wglSetGammaTableI3D = (PFNWGLSETGAMMATABLEI3DPROC)load("wglSetGammaTableI3D");
+	glad_wglGetGammaTableParametersI3D = (PFNWGLGETGAMMATABLEPARAMETERSI3DPROC)load("wglGetGammaTableParametersI3D", wglLibrary);
+	glad_wglSetGammaTableParametersI3D = (PFNWGLSETGAMMATABLEPARAMETERSI3DPROC)load("wglSetGammaTableParametersI3D", wglLibrary);
+	glad_wglGetGammaTableI3D = (PFNWGLGETGAMMATABLEI3DPROC)load("wglGetGammaTableI3D", wglLibrary);
+	glad_wglSetGammaTableI3D = (PFNWGLSETGAMMATABLEI3DPROC)load("wglSetGammaTableI3D", wglLibrary);
 }
-static void load_WGL_I3D_genlock(GLADloadproc load) {
+static void load_WGL_I3D_genlock(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_I3D_genlock) return;
-	glad_wglEnableGenlockI3D = (PFNWGLENABLEGENLOCKI3DPROC)load("wglEnableGenlockI3D");
-	glad_wglDisableGenlockI3D = (PFNWGLDISABLEGENLOCKI3DPROC)load("wglDisableGenlockI3D");
-	glad_wglIsEnabledGenlockI3D = (PFNWGLISENABLEDGENLOCKI3DPROC)load("wglIsEnabledGenlockI3D");
-	glad_wglGenlockSourceI3D = (PFNWGLGENLOCKSOURCEI3DPROC)load("wglGenlockSourceI3D");
-	glad_wglGetGenlockSourceI3D = (PFNWGLGETGENLOCKSOURCEI3DPROC)load("wglGetGenlockSourceI3D");
-	glad_wglGenlockSourceEdgeI3D = (PFNWGLGENLOCKSOURCEEDGEI3DPROC)load("wglGenlockSourceEdgeI3D");
-	glad_wglGetGenlockSourceEdgeI3D = (PFNWGLGETGENLOCKSOURCEEDGEI3DPROC)load("wglGetGenlockSourceEdgeI3D");
-	glad_wglGenlockSampleRateI3D = (PFNWGLGENLOCKSAMPLERATEI3DPROC)load("wglGenlockSampleRateI3D");
-	glad_wglGetGenlockSampleRateI3D = (PFNWGLGETGENLOCKSAMPLERATEI3DPROC)load("wglGetGenlockSampleRateI3D");
-	glad_wglGenlockSourceDelayI3D = (PFNWGLGENLOCKSOURCEDELAYI3DPROC)load("wglGenlockSourceDelayI3D");
-	glad_wglGetGenlockSourceDelayI3D = (PFNWGLGETGENLOCKSOURCEDELAYI3DPROC)load("wglGetGenlockSourceDelayI3D");
-	glad_wglQueryGenlockMaxSourceDelayI3D = (PFNWGLQUERYGENLOCKMAXSOURCEDELAYI3DPROC)load("wglQueryGenlockMaxSourceDelayI3D");
+	glad_wglEnableGenlockI3D = (PFNWGLENABLEGENLOCKI3DPROC)load("wglEnableGenlockI3D", wglLibrary);
+	glad_wglDisableGenlockI3D = (PFNWGLDISABLEGENLOCKI3DPROC)load("wglDisableGenlockI3D", wglLibrary);
+	glad_wglIsEnabledGenlockI3D = (PFNWGLISENABLEDGENLOCKI3DPROC)load("wglIsEnabledGenlockI3D", wglLibrary);
+	glad_wglGenlockSourceI3D = (PFNWGLGENLOCKSOURCEI3DPROC)load("wglGenlockSourceI3D", wglLibrary);
+	glad_wglGetGenlockSourceI3D = (PFNWGLGETGENLOCKSOURCEI3DPROC)load("wglGetGenlockSourceI3D", wglLibrary);
+	glad_wglGenlockSourceEdgeI3D = (PFNWGLGENLOCKSOURCEEDGEI3DPROC)load("wglGenlockSourceEdgeI3D", wglLibrary);
+	glad_wglGetGenlockSourceEdgeI3D = (PFNWGLGETGENLOCKSOURCEEDGEI3DPROC)load("wglGetGenlockSourceEdgeI3D", wglLibrary);
+	glad_wglGenlockSampleRateI3D = (PFNWGLGENLOCKSAMPLERATEI3DPROC)load("wglGenlockSampleRateI3D", wglLibrary);
+	glad_wglGetGenlockSampleRateI3D = (PFNWGLGETGENLOCKSAMPLERATEI3DPROC)load("wglGetGenlockSampleRateI3D", wglLibrary);
+	glad_wglGenlockSourceDelayI3D = (PFNWGLGENLOCKSOURCEDELAYI3DPROC)load("wglGenlockSourceDelayI3D", wglLibrary);
+	glad_wglGetGenlockSourceDelayI3D = (PFNWGLGETGENLOCKSOURCEDELAYI3DPROC)load("wglGetGenlockSourceDelayI3D", wglLibrary);
+	glad_wglQueryGenlockMaxSourceDelayI3D = (PFNWGLQUERYGENLOCKMAXSOURCEDELAYI3DPROC)load("wglQueryGenlockMaxSourceDelayI3D", wglLibrary);
 }
-static void load_WGL_I3D_image_buffer(GLADloadproc load) {
+static void load_WGL_I3D_image_buffer(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_I3D_image_buffer) return;
-	glad_wglCreateImageBufferI3D = (PFNWGLCREATEIMAGEBUFFERI3DPROC)load("wglCreateImageBufferI3D");
-	glad_wglDestroyImageBufferI3D = (PFNWGLDESTROYIMAGEBUFFERI3DPROC)load("wglDestroyImageBufferI3D");
-	glad_wglAssociateImageBufferEventsI3D = (PFNWGLASSOCIATEIMAGEBUFFEREVENTSI3DPROC)load("wglAssociateImageBufferEventsI3D");
-	glad_wglReleaseImageBufferEventsI3D = (PFNWGLRELEASEIMAGEBUFFEREVENTSI3DPROC)load("wglReleaseImageBufferEventsI3D");
+	glad_wglCreateImageBufferI3D = (PFNWGLCREATEIMAGEBUFFERI3DPROC)load("wglCreateImageBufferI3D", wglLibrary);
+	glad_wglDestroyImageBufferI3D = (PFNWGLDESTROYIMAGEBUFFERI3DPROC)load("wglDestroyImageBufferI3D", wglLibrary);
+	glad_wglAssociateImageBufferEventsI3D = (PFNWGLASSOCIATEIMAGEBUFFEREVENTSI3DPROC)load("wglAssociateImageBufferEventsI3D", wglLibrary);
+	glad_wglReleaseImageBufferEventsI3D = (PFNWGLRELEASEIMAGEBUFFEREVENTSI3DPROC)load("wglReleaseImageBufferEventsI3D", wglLibrary);
 }
-static void load_WGL_I3D_swap_frame_lock(GLADloadproc load) {
+static void load_WGL_I3D_swap_frame_lock(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_I3D_swap_frame_lock) return;
-	glad_wglEnableFrameLockI3D = (PFNWGLENABLEFRAMELOCKI3DPROC)load("wglEnableFrameLockI3D");
-	glad_wglDisableFrameLockI3D = (PFNWGLDISABLEFRAMELOCKI3DPROC)load("wglDisableFrameLockI3D");
-	glad_wglIsEnabledFrameLockI3D = (PFNWGLISENABLEDFRAMELOCKI3DPROC)load("wglIsEnabledFrameLockI3D");
-	glad_wglQueryFrameLockMasterI3D = (PFNWGLQUERYFRAMELOCKMASTERI3DPROC)load("wglQueryFrameLockMasterI3D");
+	glad_wglEnableFrameLockI3D = (PFNWGLENABLEFRAMELOCKI3DPROC)load("wglEnableFrameLockI3D", wglLibrary);
+	glad_wglDisableFrameLockI3D = (PFNWGLDISABLEFRAMELOCKI3DPROC)load("wglDisableFrameLockI3D", wglLibrary);
+	glad_wglIsEnabledFrameLockI3D = (PFNWGLISENABLEDFRAMELOCKI3DPROC)load("wglIsEnabledFrameLockI3D", wglLibrary);
+	glad_wglQueryFrameLockMasterI3D = (PFNWGLQUERYFRAMELOCKMASTERI3DPROC)load("wglQueryFrameLockMasterI3D", wglLibrary);
 }
-static void load_WGL_I3D_swap_frame_usage(GLADloadproc load) {
+static void load_WGL_I3D_swap_frame_usage(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_I3D_swap_frame_usage) return;
-	glad_wglGetFrameUsageI3D = (PFNWGLGETFRAMEUSAGEI3DPROC)load("wglGetFrameUsageI3D");
-	glad_wglBeginFrameTrackingI3D = (PFNWGLBEGINFRAMETRACKINGI3DPROC)load("wglBeginFrameTrackingI3D");
-	glad_wglEndFrameTrackingI3D = (PFNWGLENDFRAMETRACKINGI3DPROC)load("wglEndFrameTrackingI3D");
-	glad_wglQueryFrameTrackingI3D = (PFNWGLQUERYFRAMETRACKINGI3DPROC)load("wglQueryFrameTrackingI3D");
+	glad_wglGetFrameUsageI3D = (PFNWGLGETFRAMEUSAGEI3DPROC)load("wglGetFrameUsageI3D", wglLibrary);
+	glad_wglBeginFrameTrackingI3D = (PFNWGLBEGINFRAMETRACKINGI3DPROC)load("wglBeginFrameTrackingI3D", wglLibrary);
+	glad_wglEndFrameTrackingI3D = (PFNWGLENDFRAMETRACKINGI3DPROC)load("wglEndFrameTrackingI3D", wglLibrary);
+	glad_wglQueryFrameTrackingI3D = (PFNWGLQUERYFRAMETRACKINGI3DPROC)load("wglQueryFrameTrackingI3D", wglLibrary);
 }
-static void load_WGL_NV_DX_interop(GLADloadproc load) {
+static void load_WGL_NV_DX_interop(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_NV_DX_interop) return;
-	glad_wglDXSetResourceShareHandleNV = (PFNWGLDXSETRESOURCESHAREHANDLENVPROC)load("wglDXSetResourceShareHandleNV");
-	glad_wglDXOpenDeviceNV = (PFNWGLDXOPENDEVICENVPROC)load("wglDXOpenDeviceNV");
-	glad_wglDXCloseDeviceNV = (PFNWGLDXCLOSEDEVICENVPROC)load("wglDXCloseDeviceNV");
-	glad_wglDXRegisterObjectNV = (PFNWGLDXREGISTEROBJECTNVPROC)load("wglDXRegisterObjectNV");
-	glad_wglDXUnregisterObjectNV = (PFNWGLDXUNREGISTEROBJECTNVPROC)load("wglDXUnregisterObjectNV");
-	glad_wglDXObjectAccessNV = (PFNWGLDXOBJECTACCESSNVPROC)load("wglDXObjectAccessNV");
-	glad_wglDXLockObjectsNV = (PFNWGLDXLOCKOBJECTSNVPROC)load("wglDXLockObjectsNV");
-	glad_wglDXUnlockObjectsNV = (PFNWGLDXUNLOCKOBJECTSNVPROC)load("wglDXUnlockObjectsNV");
+	glad_wglDXSetResourceShareHandleNV = (PFNWGLDXSETRESOURCESHAREHANDLENVPROC)load("wglDXSetResourceShareHandleNV", wglLibrary);
+	glad_wglDXOpenDeviceNV = (PFNWGLDXOPENDEVICENVPROC)load("wglDXOpenDeviceNV", wglLibrary);
+	glad_wglDXCloseDeviceNV = (PFNWGLDXCLOSEDEVICENVPROC)load("wglDXCloseDeviceNV", wglLibrary);
+	glad_wglDXRegisterObjectNV = (PFNWGLDXREGISTEROBJECTNVPROC)load("wglDXRegisterObjectNV", wglLibrary);
+	glad_wglDXUnregisterObjectNV = (PFNWGLDXUNREGISTEROBJECTNVPROC)load("wglDXUnregisterObjectNV", wglLibrary);
+	glad_wglDXObjectAccessNV = (PFNWGLDXOBJECTACCESSNVPROC)load("wglDXObjectAccessNV", wglLibrary);
+	glad_wglDXLockObjectsNV = (PFNWGLDXLOCKOBJECTSNVPROC)load("wglDXLockObjectsNV", wglLibrary);
+	glad_wglDXUnlockObjectsNV = (PFNWGLDXUNLOCKOBJECTSNVPROC)load("wglDXUnlockObjectsNV", wglLibrary);
 }
-static void load_WGL_NV_copy_image(GLADloadproc load) {
+static void load_WGL_NV_copy_image(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_NV_copy_image) return;
-	glad_wglCopyImageSubDataNV = (PFNWGLCOPYIMAGESUBDATANVPROC)load("wglCopyImageSubDataNV");
+	glad_wglCopyImageSubDataNV = (PFNWGLCOPYIMAGESUBDATANVPROC)load("wglCopyImageSubDataNV", wglLibrary);
 }
-static void load_WGL_NV_delay_before_swap(GLADloadproc load) {
+static void load_WGL_NV_delay_before_swap(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_NV_delay_before_swap) return;
-	glad_wglDelayBeforeSwapNV = (PFNWGLDELAYBEFORESWAPNVPROC)load("wglDelayBeforeSwapNV");
+	glad_wglDelayBeforeSwapNV = (PFNWGLDELAYBEFORESWAPNVPROC)load("wglDelayBeforeSwapNV", wglLibrary);
 }
-static void load_WGL_NV_gpu_affinity(GLADloadproc load) {
+static void load_WGL_NV_gpu_affinity(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_NV_gpu_affinity) return;
-	glad_wglEnumGpusNV = (PFNWGLENUMGPUSNVPROC)load("wglEnumGpusNV");
-	glad_wglEnumGpuDevicesNV = (PFNWGLENUMGPUDEVICESNVPROC)load("wglEnumGpuDevicesNV");
-	glad_wglCreateAffinityDCNV = (PFNWGLCREATEAFFINITYDCNVPROC)load("wglCreateAffinityDCNV");
-	glad_wglEnumGpusFromAffinityDCNV = (PFNWGLENUMGPUSFROMAFFINITYDCNVPROC)load("wglEnumGpusFromAffinityDCNV");
-	glad_wglDeleteDCNV = (PFNWGLDELETEDCNVPROC)load("wglDeleteDCNV");
+	glad_wglEnumGpusNV = (PFNWGLENUMGPUSNVPROC)load("wglEnumGpusNV", wglLibrary);
+	glad_wglEnumGpuDevicesNV = (PFNWGLENUMGPUDEVICESNVPROC)load("wglEnumGpuDevicesNV", wglLibrary);
+	glad_wglCreateAffinityDCNV = (PFNWGLCREATEAFFINITYDCNVPROC)load("wglCreateAffinityDCNV", wglLibrary);
+	glad_wglEnumGpusFromAffinityDCNV = (PFNWGLENUMGPUSFROMAFFINITYDCNVPROC)load("wglEnumGpusFromAffinityDCNV", wglLibrary);
+	glad_wglDeleteDCNV = (PFNWGLDELETEDCNVPROC)load("wglDeleteDCNV", wglLibrary);
 }
-static void load_WGL_NV_present_video(GLADloadproc load) {
+static void load_WGL_NV_present_video(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_NV_present_video) return;
-	glad_wglEnumerateVideoDevicesNV = (PFNWGLENUMERATEVIDEODEVICESNVPROC)load("wglEnumerateVideoDevicesNV");
-	glad_wglBindVideoDeviceNV = (PFNWGLBINDVIDEODEVICENVPROC)load("wglBindVideoDeviceNV");
-	glad_wglQueryCurrentContextNV = (PFNWGLQUERYCURRENTCONTEXTNVPROC)load("wglQueryCurrentContextNV");
+	glad_wglEnumerateVideoDevicesNV = (PFNWGLENUMERATEVIDEODEVICESNVPROC)load("wglEnumerateVideoDevicesNV", wglLibrary);
+	glad_wglBindVideoDeviceNV = (PFNWGLBINDVIDEODEVICENVPROC)load("wglBindVideoDeviceNV", wglLibrary);
+	glad_wglQueryCurrentContextNV = (PFNWGLQUERYCURRENTCONTEXTNVPROC)load("wglQueryCurrentContextNV", wglLibrary);
 }
-static void load_WGL_NV_swap_group(GLADloadproc load) {
+static void load_WGL_NV_swap_group(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_NV_swap_group) return;
-	glad_wglJoinSwapGroupNV = (PFNWGLJOINSWAPGROUPNVPROC)load("wglJoinSwapGroupNV");
-	glad_wglBindSwapBarrierNV = (PFNWGLBINDSWAPBARRIERNVPROC)load("wglBindSwapBarrierNV");
-	glad_wglQuerySwapGroupNV = (PFNWGLQUERYSWAPGROUPNVPROC)load("wglQuerySwapGroupNV");
-	glad_wglQueryMaxSwapGroupsNV = (PFNWGLQUERYMAXSWAPGROUPSNVPROC)load("wglQueryMaxSwapGroupsNV");
-	glad_wglQueryFrameCountNV = (PFNWGLQUERYFRAMECOUNTNVPROC)load("wglQueryFrameCountNV");
-	glad_wglResetFrameCountNV = (PFNWGLRESETFRAMECOUNTNVPROC)load("wglResetFrameCountNV");
+	glad_wglJoinSwapGroupNV = (PFNWGLJOINSWAPGROUPNVPROC)load("wglJoinSwapGroupNV", wglLibrary);
+	glad_wglBindSwapBarrierNV = (PFNWGLBINDSWAPBARRIERNVPROC)load("wglBindSwapBarrierNV", wglLibrary);
+	glad_wglQuerySwapGroupNV = (PFNWGLQUERYSWAPGROUPNVPROC)load("wglQuerySwapGroupNV", wglLibrary);
+	glad_wglQueryMaxSwapGroupsNV = (PFNWGLQUERYMAXSWAPGROUPSNVPROC)load("wglQueryMaxSwapGroupsNV", wglLibrary);
+	glad_wglQueryFrameCountNV = (PFNWGLQUERYFRAMECOUNTNVPROC)load("wglQueryFrameCountNV", wglLibrary);
+	glad_wglResetFrameCountNV = (PFNWGLRESETFRAMECOUNTNVPROC)load("wglResetFrameCountNV", wglLibrary);
 }
-static void load_WGL_NV_vertex_array_range(GLADloadproc load) {
+static void load_WGL_NV_vertex_array_range(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_NV_vertex_array_range) return;
-	glad_wglAllocateMemoryNV = (PFNWGLALLOCATEMEMORYNVPROC)load("wglAllocateMemoryNV");
-	glad_wglFreeMemoryNV = (PFNWGLFREEMEMORYNVPROC)load("wglFreeMemoryNV");
+	glad_wglAllocateMemoryNV = (PFNWGLALLOCATEMEMORYNVPROC)load("wglAllocateMemoryNV", wglLibrary);
+	glad_wglFreeMemoryNV = (PFNWGLFREEMEMORYNVPROC)load("wglFreeMemoryNV", wglLibrary);
 }
-static void load_WGL_NV_video_capture(GLADloadproc load) {
+static void load_WGL_NV_video_capture(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_NV_video_capture) return;
-	glad_wglBindVideoCaptureDeviceNV = (PFNWGLBINDVIDEOCAPTUREDEVICENVPROC)load("wglBindVideoCaptureDeviceNV");
-	glad_wglEnumerateVideoCaptureDevicesNV = (PFNWGLENUMERATEVIDEOCAPTUREDEVICESNVPROC)load("wglEnumerateVideoCaptureDevicesNV");
-	glad_wglLockVideoCaptureDeviceNV = (PFNWGLLOCKVIDEOCAPTUREDEVICENVPROC)load("wglLockVideoCaptureDeviceNV");
-	glad_wglQueryVideoCaptureDeviceNV = (PFNWGLQUERYVIDEOCAPTUREDEVICENVPROC)load("wglQueryVideoCaptureDeviceNV");
-	glad_wglReleaseVideoCaptureDeviceNV = (PFNWGLRELEASEVIDEOCAPTUREDEVICENVPROC)load("wglReleaseVideoCaptureDeviceNV");
+	glad_wglBindVideoCaptureDeviceNV = (PFNWGLBINDVIDEOCAPTUREDEVICENVPROC)load("wglBindVideoCaptureDeviceNV", wglLibrary);
+	glad_wglEnumerateVideoCaptureDevicesNV = (PFNWGLENUMERATEVIDEOCAPTUREDEVICESNVPROC)load("wglEnumerateVideoCaptureDevicesNV", wglLibrary);
+	glad_wglLockVideoCaptureDeviceNV = (PFNWGLLOCKVIDEOCAPTUREDEVICENVPROC)load("wglLockVideoCaptureDeviceNV", wglLibrary);
+	glad_wglQueryVideoCaptureDeviceNV = (PFNWGLQUERYVIDEOCAPTUREDEVICENVPROC)load("wglQueryVideoCaptureDeviceNV", wglLibrary);
+	glad_wglReleaseVideoCaptureDeviceNV = (PFNWGLRELEASEVIDEOCAPTUREDEVICENVPROC)load("wglReleaseVideoCaptureDeviceNV", wglLibrary);
 }
-static void load_WGL_NV_video_output(GLADloadproc load) {
+static void load_WGL_NV_video_output(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_NV_video_output) return;
-	glad_wglGetVideoDeviceNV = (PFNWGLGETVIDEODEVICENVPROC)load("wglGetVideoDeviceNV");
-	glad_wglReleaseVideoDeviceNV = (PFNWGLRELEASEVIDEODEVICENVPROC)load("wglReleaseVideoDeviceNV");
-	glad_wglBindVideoImageNV = (PFNWGLBINDVIDEOIMAGENVPROC)load("wglBindVideoImageNV");
-	glad_wglReleaseVideoImageNV = (PFNWGLRELEASEVIDEOIMAGENVPROC)load("wglReleaseVideoImageNV");
-	glad_wglSendPbufferToVideoNV = (PFNWGLSENDPBUFFERTOVIDEONVPROC)load("wglSendPbufferToVideoNV");
-	glad_wglGetVideoInfoNV = (PFNWGLGETVIDEOINFONVPROC)load("wglGetVideoInfoNV");
+	glad_wglGetVideoDeviceNV = (PFNWGLGETVIDEODEVICENVPROC)load("wglGetVideoDeviceNV", wglLibrary);
+	glad_wglReleaseVideoDeviceNV = (PFNWGLRELEASEVIDEODEVICENVPROC)load("wglReleaseVideoDeviceNV", wglLibrary);
+	glad_wglBindVideoImageNV = (PFNWGLBINDVIDEOIMAGENVPROC)load("wglBindVideoImageNV", wglLibrary);
+	glad_wglReleaseVideoImageNV = (PFNWGLRELEASEVIDEOIMAGENVPROC)load("wglReleaseVideoImageNV", wglLibrary);
+	glad_wglSendPbufferToVideoNV = (PFNWGLSENDPBUFFERTOVIDEONVPROC)load("wglSendPbufferToVideoNV", wglLibrary);
+	glad_wglGetVideoInfoNV = (PFNWGLGETVIDEOINFONVPROC)load("wglGetVideoInfoNV", wglLibrary);
 }
-static void load_WGL_OML_sync_control(GLADloadproc load) {
+static void load_WGL_OML_sync_control(GLADloadproc load, void* wglLibrary) {
 	if(!GLAD_WGL_OML_sync_control) return;
-	glad_wglGetSyncValuesOML = (PFNWGLGETSYNCVALUESOMLPROC)load("wglGetSyncValuesOML");
-	glad_wglGetMscRateOML = (PFNWGLGETMSCRATEOMLPROC)load("wglGetMscRateOML");
-	glad_wglSwapBuffersMscOML = (PFNWGLSWAPBUFFERSMSCOMLPROC)load("wglSwapBuffersMscOML");
-	glad_wglSwapLayerBuffersMscOML = (PFNWGLSWAPLAYERBUFFERSMSCOMLPROC)load("wglSwapLayerBuffersMscOML");
-	glad_wglWaitForMscOML = (PFNWGLWAITFORMSCOMLPROC)load("wglWaitForMscOML");
-	glad_wglWaitForSbcOML = (PFNWGLWAITFORSBCOMLPROC)load("wglWaitForSbcOML");
+	glad_wglGetSyncValuesOML = (PFNWGLGETSYNCVALUESOMLPROC)load("wglGetSyncValuesOML", wglLibrary);
+	glad_wglGetMscRateOML = (PFNWGLGETMSCRATEOMLPROC)load("wglGetMscRateOML", wglLibrary);
+	glad_wglSwapBuffersMscOML = (PFNWGLSWAPBUFFERSMSCOMLPROC)load("wglSwapBuffersMscOML", wglLibrary);
+	glad_wglSwapLayerBuffersMscOML = (PFNWGLSWAPLAYERBUFFERSMSCOMLPROC)load("wglSwapLayerBuffersMscOML", wglLibrary);
+	glad_wglWaitForMscOML = (PFNWGLWAITFORMSCOMLPROC)load("wglWaitForMscOML", wglLibrary);
+	glad_wglWaitForSbcOML = (PFNWGLWAITFORSBCOMLPROC)load("wglWaitForSbcOML", wglLibrary);
 }
 static int find_extensionsWGL(void) {
 	if (!get_exts()) return 0;
@@ -710,44 +710,44 @@ static void find_coreWGL(HDC hdc) {
 	GLADWGLhdc = hdc;
 }
 
-int gladLoadWGLLoader(GLADloadproc load, HDC hdc) {
-	wglGetExtensionsStringARB = (PFNWGLGETEXTENSIONSSTRINGARBPROC)load("wglGetExtensionsStringARB");
-	wglGetExtensionsStringEXT = (PFNWGLGETEXTENSIONSSTRINGEXTPROC)load("wglGetExtensionsStringEXT");
+int gladLoadWGLLoader(GLADloadproc load, HDC hdc, void* wglLibrary) {
+	wglGetExtensionsStringARB = (PFNWGLGETEXTENSIONSSTRINGARBPROC)load("wglGetExtensionsStringARB", wglLibrary);
+	wglGetExtensionsStringEXT = (PFNWGLGETEXTENSIONSSTRINGEXTPROC)load("wglGetExtensionsStringEXT", wglLibrary);
 	if(wglGetExtensionsStringARB == NULL && wglGetExtensionsStringEXT == NULL) return 0;
 	find_coreWGL(hdc);
 
 	if (!find_extensionsWGL()) return 0;
-	load_WGL_3DL_stereo_control(load);
-	load_WGL_AMD_gpu_association(load);
-	load_WGL_ARB_buffer_region(load);
-	load_WGL_ARB_create_context(load);
-	load_WGL_ARB_extensions_string(load);
-	load_WGL_ARB_make_current_read(load);
-	load_WGL_ARB_pbuffer(load);
-	load_WGL_ARB_pixel_format(load);
-	load_WGL_ARB_render_texture(load);
-	load_WGL_EXT_display_color_table(load);
-	load_WGL_EXT_extensions_string(load);
-	load_WGL_EXT_make_current_read(load);
-	load_WGL_EXT_pbuffer(load);
-	load_WGL_EXT_pixel_format(load);
-	load_WGL_EXT_swap_control(load);
-	load_WGL_I3D_digital_video_control(load);
-	load_WGL_I3D_gamma(load);
-	load_WGL_I3D_genlock(load);
-	load_WGL_I3D_image_buffer(load);
-	load_WGL_I3D_swap_frame_lock(load);
-	load_WGL_I3D_swap_frame_usage(load);
-	load_WGL_NV_DX_interop(load);
-	load_WGL_NV_copy_image(load);
-	load_WGL_NV_delay_before_swap(load);
-	load_WGL_NV_gpu_affinity(load);
-	load_WGL_NV_present_video(load);
-	load_WGL_NV_swap_group(load);
-	load_WGL_NV_vertex_array_range(load);
-	load_WGL_NV_video_capture(load);
-	load_WGL_NV_video_output(load);
-	load_WGL_OML_sync_control(load);
+	load_WGL_3DL_stereo_control(load, wglLibrary);
+	load_WGL_AMD_gpu_association(load, wglLibrary);
+	load_WGL_ARB_buffer_region(load, wglLibrary);
+	load_WGL_ARB_create_context(load, wglLibrary);
+	load_WGL_ARB_extensions_string(load, wglLibrary);
+	load_WGL_ARB_make_current_read(load, wglLibrary);
+	load_WGL_ARB_pbuffer(load, wglLibrary);
+	load_WGL_ARB_pixel_format(load, wglLibrary);
+	load_WGL_ARB_render_texture(load, wglLibrary);
+	load_WGL_EXT_display_color_table(load, wglLibrary);
+	load_WGL_EXT_extensions_string(load, wglLibrary);
+	load_WGL_EXT_make_current_read(load, wglLibrary);
+	load_WGL_EXT_pbuffer(load, wglLibrary);
+	load_WGL_EXT_pixel_format(load, wglLibrary);
+	load_WGL_EXT_swap_control(load, wglLibrary);
+	load_WGL_I3D_digital_video_control(load, wglLibrary);
+	load_WGL_I3D_gamma(load, wglLibrary);
+	load_WGL_I3D_genlock(load, wglLibrary);
+	load_WGL_I3D_image_buffer(load, wglLibrary);
+	load_WGL_I3D_swap_frame_lock(load, wglLibrary);
+	load_WGL_I3D_swap_frame_usage(load, wglLibrary);
+	load_WGL_NV_DX_interop(load, wglLibrary);
+	load_WGL_NV_copy_image(load, wglLibrary);
+	load_WGL_NV_delay_before_swap(load, wglLibrary);
+	load_WGL_NV_gpu_affinity(load, wglLibrary);
+	load_WGL_NV_present_video(load, wglLibrary);
+	load_WGL_NV_swap_group(load, wglLibrary);
+	load_WGL_NV_vertex_array_range(load, wglLibrary);
+	load_WGL_NV_video_capture(load, wglLibrary);
+	load_WGL_NV_video_output(load, wglLibrary);
+	load_WGL_OML_sync_control(load, wglLibrary);
 	return 1;
 }
 

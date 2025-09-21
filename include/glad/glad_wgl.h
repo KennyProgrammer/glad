@@ -108,8 +108,6 @@
 extern "C" {
 #endif
 
-typedef void* (* GLADloadproc)(const char *name);
-
 #ifndef GLAPI
 # if defined(GLAD_GLAPI_EXPORT)
 #  if defined(_WIN32) || defined(__CYGWIN__)
@@ -136,9 +134,16 @@ typedef void* (* GLADloadproc)(const char *name);
 # endif
 #endif
 
-GLAPI int gladLoadWGL(HDC hdc);
-
-GLAPI int gladLoadWGLLoader(GLADloadproc, HDC hdc);
+#define __glad_h_ForceEngine
+#ifdef __glad_h_ForceEngine
+	typedef void* (*GLADloadproc)(const char* name, void* wglLibrary);
+	GLAPI int gladLoadWGL(HDC hdc, void* wglLibrary);
+	GLAPI int gladLoadWGLLoader(GLADloadproc, HDC hdc, void* wglLibrary);
+#else
+	typedef void* (*GLADloadproc)(const char* name);
+	GLAPI int gladLoadWGL(HDC hdc);
+	GLAPI int gladLoadWGLLoader(GLADloadproc, HDC hdc);
+#endif
 
 struct _GPU_DEVICE {
     DWORD  cb;
